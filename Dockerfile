@@ -1,0 +1,24 @@
+FROM ubuntu
+MAINTAINER Eduardo Feo Flushing <eduardo@idsia.ch>
+LABEL Description="This image is used to setup an adhoc network" Vendor="IDSIA" Version="1.0"
+
+# dependencies:
+# lcm: autoconf libtool libglib2.0-dev python-dev
+# xbee_bridge: cmake 
+
+RUN apt-get update && apt-get install -y \
+    gcc \
+    g++ \
+    build-essential \
+    libgoogle-glog-dev \
+    libgps-dev \
+    autoconf \
+    libtool \
+    libglib2.0-dev \
+    python-dev \
+    cmake \
+    iw \
+    wireless-tools \
+    && rm -rf /var/lib/apt/lists/*
+WORKDIR /root
+USER root
