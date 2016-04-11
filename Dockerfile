@@ -1,4 +1,4 @@
-FROM armv7/armhf-ubuntu_core
+FROM armv7/armhf-debian:latest
 MAINTAINER Eduardo Feo Flushing <eduardo@idsia.ch>
 LABEL Description="This image is used to setup an adhoc network" Vendor="IDSIA" Version="1.0"
 
