@@ -36,8 +36,8 @@ RUN set -x \
 && make -C ./userlevel/ MINDRIVER=RNP_PKG \
 && make -C ./userlevel/ MINDRIVER=RNP_CLIENT_PKG \
 && cp ./userlevel/RNP_PKGclick /usr/local/bin \
-&& cp ./userlevel/RNP_CLIENT_PKGclick /usr/local/bin
-&& cp -R scripts /root/click_scripts
+&& cp ./userlevel/RNP_CLIENT_PKGclick /usr/local/bin \
+&& cp -R scripts /root/click_scripts \
 && cd ../ && rm -rf click
 
 RUN set -x \
