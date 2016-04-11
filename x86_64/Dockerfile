@@ -23,7 +23,7 @@ USER root
 RUN set -x \
 && git clone https://github.com/lcm-proj/lcm.git \
 && ( cd lcm && git checkout ) \
-&& ./bootstrap.sh \
+&& cd lcm && ./bootstrap.sh \
 && ./configure && make install \
 && cd ../ && rm -rf lcm
 
