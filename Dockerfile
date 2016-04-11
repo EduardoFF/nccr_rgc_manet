@@ -31,7 +31,7 @@ RUN set -x \
 && git clone https://github.com/EduardoFF/click.git \
 && ( cd click && git checkout ) \
 && rm -rf bin/* \
-&& ./configure  --disable-linuxmodule   --enable-tools=mixed \
+&& cd click && ./configure  --disable-linuxmodule   --enable-tools=mixed \
 && make install-tools \
 && make -C ./userlevel/ MINDRIVER=RNP_PKG \
 && make -C ./userlevel/ MINDRIVER=RNP_CLIENT_PKG \
@@ -43,11 +43,11 @@ RUN set -x \
 RUN set -x \
 && git clone https://github.com/attie/libxbee3.git \
 && ( cd libxbee3  && git checkout ) \
-&& make configure && make install
+&& cd libxbee && make configure && make install
 
 RUN set -x \
 && git clone https://github.com/EduardoFF/rnp_xbee_bridge.git \
 && ( cd rnp_xbee_bridge  && git checkout ) \
-&& mkdir build && cd build && cmake ../src \
+&& cd rnp_xbee_bridge && mkdir build && cd build && cmake ../src \
 && make install
 
