@@ -2,9 +2,6 @@ FROM ubuntu
 MAINTAINER Eduardo Feo Flushing <eduardo@idsia.ch>
 LABEL Description="This image is used to setup an adhoc network" Vendor="IDSIA" Version="1.0"
 
-# dependencies:
-# lcm: autoconf libtool libglib2.0-dev python-dev
-# xbee_bridge: cmake 
 
 RUN apt-get update && apt-get install -y \
     gcc \
