@@ -18,9 +18,11 @@ RUN apt-get update && apt-get install -y \
     python-dev \
     cmake \
     iw \
+    git \
     wireless-tools \
     && rm -rf /var/lib/apt/lists/*
 WORKDIR /root
 USER root
 COPY *.sh /root/
+RUN /root/install.sh
 
