@@ -21,6 +21,9 @@ net-tools && rm -rf /var/lib/apt/lists/*
 WORKDIR /root
 USER root
 
+VOLUME /logs
+VOLUME /mnt
+
 RUN set -x \
 && git clone https://github.com/lcm-proj/lcm.git \
 && ( cd lcm && git checkout ) \
