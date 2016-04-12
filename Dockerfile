@@ -54,5 +54,7 @@ RUN set -x \
 && cd rnp_xbee_bridge && mkdir build && cd build && cmake ../src \
 && make install \
 && chmod +x /usr/local/bin/setup_manet \
-&& chmod +x /usr/local/bin/setup_wlan
+&& chmod +x /usr/local/bin/setup_wlan \
+&& cd ../src/scripts \
+&& python setup.py install
 
