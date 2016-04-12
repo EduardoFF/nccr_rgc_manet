@@ -16,7 +16,7 @@ python-dev \
 cmake \
 iw \
 git \
-wireless-tools && net-tools && rm -rf /var/lib/apt/lists/*
+wireless-tools  && rm -rf /var/lib/apt/lists/*
 WORKDIR /root
 USER root
 
