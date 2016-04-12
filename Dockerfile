@@ -16,7 +16,7 @@ python-dev \
 cmake \
 iw \
 git \
-wireless-tools && rm -rf /var/lib/apt/lists/*
+wireless-tools && net-tools && rm -rf /var/lib/apt/lists/*
 WORKDIR /root
 USER root
 
@@ -33,11 +33,14 @@ RUN set -x \
 && rm -rf bin/* \
 && cd click && ./configure  --disable-linuxmodule   --enable-tools=mixed \
 && make install-tools \
+&& make install-local \
 && make -C ./userlevel/ MINDRIVER=RNP_PKG \
 && make -C ./userlevel/ MINDRIVER=RNP_CLIENT_PKG \
 && cp ./userlevel/RNP_PKGclick /usr/local/bin \
 && cp ./userlevel/RNP_CLIENT_PKGclick /usr/local/bin \
 && cp -R scripts /root/click_scripts \
+&& cd /root/click_scripts/ \
+&& click-align rnp_scripts/rnp_linux_args.click > rnp_scripts/rnp_linux_args_aligned.click \
 && cd ../ && rm -rf click
 
 RUN set -x \
@@ -49,5 +52,7 @@ RUN set -x \
 && git clone https://github.com/EduardoFF/rnp_xbee_bridge.git \
 && ( cd rnp_xbee_bridge  && git checkout ) \
 && cd rnp_xbee_bridge && mkdir build && cd build && cmake ../src \
-&& make install
+&& make install \
+&& chmod +x /usr/local/bin/setup_manet \
+&& chmod +x /usr/local/bin/setup_wlan
 
