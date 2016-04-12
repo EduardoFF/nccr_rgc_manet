@@ -17,7 +17,7 @@ cmake \
 iw \
 git \
 wireless-tools \
-net-tools x&& rm -rf /var/lib/apt/lists/*
+net-tools && rm -rf /var/lib/apt/lists/*
 WORKDIR /root
 USER root
 
