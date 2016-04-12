@@ -1,0 +1,12 @@
+[submodule "src/manet_xbee_bridge"]
+	path = src/manet_xbee_bridge
+	url = https://github.com/EduardoFF/manet_xbee_bridge.git
+[submodule "src/click"]
+	path = src/click
+	url = https://github.com/EduardoFF/click.git
+[submodule "src/libxbee3"]
+	path = src/libxbee3
+	url = https://github.com/attie/libxbee3.git
+[submodule "src/lcm"]
+	path = src/lcm
+	url = https://github.com/lcm-proj/lcm.git
