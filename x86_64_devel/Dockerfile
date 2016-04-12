@@ -16,10 +16,33 @@ python-dev \
 cmake \
 iw \
 git \
-wireless-tools && rm -rf /var/lib/apt/lists/*
+wireless-tools \
+net-tools && rm -rf /var/lib/apt/lists/*
 WORKDIR /root
 USER root
-COPY *.sh /root/
+
+VOLUME /devel
+
+RUN set -x \
+&& cd /devel \
+&& git clone https://github.com/lcm-proj/lcm.git \
+&& ( cd lcm && git checkout )
+
+RUN set -x \
+&& cd /devel \
+&& git clone https://github.com/EduardoFF/click.git \
+&& ( cd click && git checkout )
+
+RUN set -x \
+&& cd /devel \
+&& git clone https://github.com/attie/libxbee3.git \
+&& ( cd libxbee3  && git checkout )
+
+RUN set -x \
+&& cd /devel \
+&& git clone https://github.com/EduardoFF/rnp_xbee_bridge.git \
+&& ( cd rnp_xbee_bridge  && git checkout ) \
+
+COPY install.sh /root/install.sh
 RUN /root/install.sh
-RUN rm -rf /sources
 
