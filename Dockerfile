@@ -43,7 +43,7 @@ RUN set -x \
 RUN set -x \
 && git clone https://github.com/attie/libxbee3.git \
 && ( cd libxbee3  && git checkout ) \
-&& cd libxbee && make configure && make install
+&& cd libxbee3 && make configure && make install
 
 RUN set -x \
 && git clone https://github.com/EduardoFF/rnp_xbee_bridge.git \
