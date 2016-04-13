@@ -53,9 +53,9 @@ RUN set -x \
 && cd libxbee3 && make configure && make install
 
 RUN set -x \
-&& git clone https://github.com/EduardoFF/rnp_xbee_bridge.git \
-&& ( cd rnp_xbee_bridge  && git checkout ) \
-&& cd rnp_xbee_bridge && mkdir build && cd build && cmake ../src \
+&& git clone https://github.com/EduardoFF/manet_xbee_bridge.git \
+&& ( cd manet_xbee_bridge  && git checkout ) \
+&& cd manet_xbee_bridge && mkdir build && cd build && cmake ../src \
 && make install \
 && chmod +x /usr/local/bin/setup_manet \
 && chmod +x /usr/local/bin/setup_wlan \
