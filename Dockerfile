@@ -50,7 +50,8 @@ RUN set -x \
 RUN set -x \
 && git clone https://github.com/attie/libxbee3.git \
 && ( cd libxbee3  && git checkout ) \
-&& cd libxbee3 && make configure && make install
+&& cd libxbee3 && make configure && make install \
+&& cd ../ && rm -rf libxbee3
 
 RUN set -x \
 && git clone https://github.com/EduardoFF/manet_xbee_bridge.git \
@@ -60,5 +61,9 @@ RUN set -x \
 && chmod +x /usr/local/bin/setup_manet \
 && chmod +x /usr/local/bin/setup_wlan \
 && cd ../src/scripts \
-&& python setup.py install
+&& python setup.py install \
+&& cp default.routes /root/ \
+&& cd ../ && rm -rf manet_xbee_bridge
 
+
+ENV LD_LIBRARY_PATH ${LD_LIBRARY_PATH}:/usr/local/lib

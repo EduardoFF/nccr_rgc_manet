@@ -22,6 +22,10 @@ WORKDIR /root
 USER root
 
 VOLUME /src
+
+VOLUME /logs
+VOLUME /mnt
+
 ENV LD_LIBRARY_PATH ${LD_LIBRARY_PATH}:/usr/local/lib
 
 COPY install.sh /root/
