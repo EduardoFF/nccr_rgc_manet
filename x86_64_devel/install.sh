@@ -1,9 +1,8 @@
-
-cd /devel/lcm
+cd /src/lcm
 ./bootstrap.sh
 ./configure && make install
 
-cd /devel/click
+cd /src/click
 rm -rf bin/*
 ./configure  --disable-linuxmodule   --enable-tools=mixed
 make install-tools install-local
@@ -16,10 +15,10 @@ cd /root/click_scripts/
 click-align rnp_scripts/rnp_linux_args.click > rnp_scripts/rnp_linux_args_aligned.click 
 
 
-cd /devel/libxbee3
+cd /src/libxbee3
 make configure && make install
 
-cd /devel/xbee_bridge
+cd /src/manet_xbee_bridge
 mkdir -p build
 cd build
 cmake ../src
