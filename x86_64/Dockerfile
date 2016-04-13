@@ -21,6 +21,9 @@ net-tools && rm -rf /var/lib/apt/lists/*
 WORKDIR /root
 USER root
 
+VOLUME /logs
+VOLUME /mnt
+
 RUN set -x \
 && git clone https://github.com/lcm-proj/lcm.git \
 && ( cd lcm && git checkout ) \
@@ -47,14 +50,21 @@ RUN set -x \
 RUN set -x \
 && git clone https://github.com/attie/libxbee3.git \
 && ( cd libxbee3  && git checkout ) \
-&& cd libxbee3 && make configure && make install
+&& cd libxbee3 && make configure && make install \
+&& cd ../ && rm -rf libxbee3
 
 RUN set -x \
-&& git clone https://github.com/EduardoFF/rnp_xbee_bridge.git \
-&& ( cd rnp_xbee_bridge  && git checkout ) \
-&& cd rnp_xbee_bridge && mkdir build && cd build && cmake ../src \
+&& git clone https://github.com/EduardoFF/manet_xbee_bridge.git \
+&& ( cd manet_xbee_bridge  && git checkout ) \
+&& cd manet_xbee_bridge && mkdir build && cd build && cmake ../src \
 && make install \
 && chmod +x /usr/local/bin/setup_manet \
 && chmod +x /usr/local/bin/setup_wlan \
 && cd ../src/scripts \
-&& python setup.py install
+&& python setup.py install \
+&& cp default.routes /root/ \
+&& cd ../ && rm -rf manet_xbee_bridge
+
+
+
+ENV LD_LIBRARY_PATH ${LD_LIBRARY_PATH}:/usr/local/lib
