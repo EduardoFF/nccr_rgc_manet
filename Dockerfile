@@ -32,8 +32,8 @@ RUN set -x \
 && cd ../ && rm -rf lcm
 
 RUN set -x \
-&& git clone https://github.com/EduardoFF/click.git \
-&& ( cd click && git checkout ) \
+&& ( git clone https://github.com/EduardoFF/click.git \
+&& cd click && git checkout ) \
 && rm -rf bin/* \
 && cd click && ./configure  --disable-linuxmodule   --enable-tools=mixed \
 && make install-tools \
@@ -54,8 +54,8 @@ RUN set -x \
 && cd ../ && rm -rf libxbee3
 
 RUN set -x \
-&& git clone https://github.com/EduardoFF/manet_xbee_bridge.git \
-&& ( cd manet_xbee_bridge  && git checkout ) \
+&& ( git clone https://github.com/EduardoFF/manet_xbee_bridge.git \
+&& cd manet_xbee_bridge  && git checkout ) \
 && cd manet_xbee_bridge && mkdir build && cd build && cmake ../src \
 && make install \
 && chmod +x /usr/local/bin/setup_manet \
