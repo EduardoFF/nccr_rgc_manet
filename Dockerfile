@@ -32,12 +32,10 @@ RUN set -x \
 && cd ../ && rm -rf lcm
 
 RUN set -x \
-&& ( git clone https://github.com/EduardoFF/click.git \
-&& cd click && git checkout ) \
+&& ( git clone https://github.com/EduardoFF/click.git && cd click && git checkout ) \
 && rm -rf bin/* \
 && cd click && ./configure  --disable-linuxmodule   --enable-tools=mixed \
-&& make install-tools \
-&& make install-local \
+&& make install-tools install-local \
 && make -C ./userlevel/ MINDRIVER=RNP_PKG \
 && make -C ./userlevel/ MINDRIVER=RNP_CLIENT_PKG \
 && cp ./userlevel/RNP_PKGclick /usr/local/bin \
