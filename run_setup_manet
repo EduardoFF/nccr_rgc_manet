@@ -1,0 +1,4 @@
+ID=$1
+docker run -d --restart=always --privileged --net="host" \
+-v /home/odroid/manet_logs:/logs -v /home/odroid/manet_mnt:/mnt \
+nccr_manet setup_manet -i wlan0 -n ${ID} -r /root/default.routes -s /root/click_scripts/rnp_client_scripts/rnp_client_linux_args.click --bridged
