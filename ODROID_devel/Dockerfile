@@ -51,11 +51,9 @@ cd /src \
 && cp ./userlevel/RNP_PKGclick /usr/local/bin \
 && cp ./userlevel/RNP_CLIENT_PKGclick /usr/local/bin \
 && cp -R scripts /root/click_scripts \
-&& cd /root/click_scripts/ \
-&& click-align rnp_scripts/rnp_linux_args.click > rnp_scripts/rnp_linux_args_aligned.click \
-&& cd ../ && rm -rf click
 
 RUN set -x \
+cd /src \
 && ( git clone https://github.com/EduardoFF/manet_xbee_bridge.git && cd manet_xbee_bridge  && git checkout ) \
 && cd manet_xbee_bridge && mkdir build && cd build && cmake ../src \
 && make install \
@@ -64,7 +62,6 @@ RUN set -x \
 && cd ../src/scripts \
 && python setup.py install \
 && cp default.routes /root/ \
-&& cd ../ && rm -rf manet_xbee_bridge
 
 COPY install.sh /root/install.sh
 

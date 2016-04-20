@@ -63,5 +63,6 @@ RUN set -x \
 && cp default.routes /root/ \
 && cd ../ && rm -rf manet_xbee_bridge
 
+COPY addressbook /root/
 
 ENV LD_LIBRARY_PATH ${LD_LIBRARY_PATH}:/usr/local/lib
