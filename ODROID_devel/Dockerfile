@@ -24,16 +24,15 @@ USER root
 VOLUME /logs
 VOLUME /mnt
 
+RUN mkdir /src
 
 RUN set -x \
-&& cd /src \
 && ( git clone https://github.com/lcm-proj/lcm.git && cd lcm && git checkout ) \
 && cd lcm && ./bootstrap.sh \
 && ./configure && make install \
 && cd ../ && rm -rf lcm
 
 RUN set -x \
-&& cd /src \
 && ( git clone https://github.com/attie/libxbee3.git && cd libxbee3  && git checkout ) \
 && cd libxbee3 && make configure && make install \
 && cd ../ && rm -rf libxbee3
@@ -59,6 +58,8 @@ RUN set -x \
 && cd ../src/scripts \
 && python setup.py install \
 && cp default.routes /root/ 
+
+VOLUME /src
 
 COPY install.sh /root/install.sh
 ENV LD_LIBRARY_PATH ${LD_LIBRARY_PATH}:/usr/local/lib
