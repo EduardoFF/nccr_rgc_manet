@@ -1,0 +1,5 @@
+ID=$1
+docker run -it  --privileged --net="host" \
+-v /home/odroid/manet_logs:/logs -v /home/odroid/manet_mnt:/mnt \
+--name manet_dev nccr_manet:devel  /bin/bash
+

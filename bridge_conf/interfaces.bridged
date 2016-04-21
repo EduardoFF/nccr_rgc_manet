@@ -25,35 +25,13 @@ iface eth0 inet static
     pre-up iptables-restore < /etc/iptables.ipv4.nat
     post-down iptables -F  
     #gateway 192.168.1.1
-
-auto wlan2
-iface wlan2 inet dhcp
- #       wpa-conf /home/odroid/lql_capture/supsi.conf
-         wpa-conf /home/odroid/lql_capture/wpa_new_mobots.conf
- 
-      up echo nameserver 8.8.8.8 >> /etc/resolv.conf
-        up echo nameserver 8.8.4.4 >> /etc/resolv.conf
-
 auto wlan1
-iface wlan1 inet static
-    address 10.42.43.112
-    broadcast 10.42.43.255
-    netmask 255.255.255.0
-    wireless-channel 1
-    wireless-essid ADHOC
-    wireless-ap 06:02:03:04:05:06
-    wireless-mode ad-hoc
+iface wlan1 inet dhcp
+wpa-ssid drone_wifi
+wpa-psk 0e44d33807dc67fd502dd1d8ae6cefeb4f8f65bcbff2e13e230fc77a8804d894 
+#wpa-conf /home/odroid/nccr_rgc_manet/wpa_drone_wifi.conf
+up echo nameserver 8.8.8.8 >> /etc/resolv.conf
+up echo nameserver 8.8.4.4 >> /etc/resolv.conf
 
 
-#iface wlan2 inet static
-#    address 10.42.43.10
-#    netmask 255.255.255.0
-#    wireless-channel 3
-#    wireless-essid ADHOC
-#    wireless-mode ad-hoc
-
-#iface wlan2 inet dhcp
-#iface drone_wifi inet dhcp
-#   wpa-ssid drone_wifi
-#   wpa-psk 0e44d33807dc67fd502dd1d8ae6cefeb4f8f65bcbff2e13e230fc77a8804d894
 
