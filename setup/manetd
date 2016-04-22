@@ -1,0 +1,33 @@
+#!/bin/bash
+
+CONFIGFILE="/usr/local/share/nccr_manet/manetd.conf"
+if [ -f ${CONFIGFILE}  ];
+then
+    source "${CONFIGFILE}"
+fi
+
+export SETUPMANETCMD
+cleanup() {
+    touch /logs/trapped
+    echo "cleaning -${SETUPMANETCMD}- setup_manet" > /logs/trapped
+    pkill -f setup_manet
+    exit
+}
+
+export -f cleanup
+trap 'cleanup' INT TERM HUP
+
+
+while true; do
+    if [ -z "$(pidof ${SETUPMANETCMD})" ] 
+    then
+	echo "setting up manet"
+	CTIME=$(env TZ=":Europe/Rome" date +%Y%m%d_%H%M%S)
+	LOGFILE="/logs/${CTIME}-setup_manet.log"
+	CURRENTLOG="/logs/setup_manet.log"
+        touch ${LOGFILE}
+	ln -f -s ${LOGFILE} ${CURRENTLOG}
+	${SETUPMANETCMDLINE} >> ${LOGFILE} 2>&1
+    fi
+    sleep 5
+done

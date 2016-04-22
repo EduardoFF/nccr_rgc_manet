@@ -11,7 +11,7 @@ INITROUTES=""
 ETH=eth0
 BRIDGED=0
 QUIET=0
-CLICKAPP=RNP_PKGclick
+export CLICKAPP=RNP_PKGclick
 USE_IW=0
 
 print_help()
@@ -19,6 +19,18 @@ print_help()
     echo "setup_manet: xxxx"
 }
 export -f print_help
+
+
+cleanup() {
+    touch /logs/smtrapped
+    echo "cleaning -${CLICKAPP}- " > /logs/smtrapped
+    pkill -f ${CLICKAPP}
+    exit
+}
+
+export -f cleanup
+trap 'cleanup' INT TERM
+
 
 
 while [ $# -gt 0 ]
@@ -43,11 +55,11 @@ do
 	    ;;
 	--quiet)
 	    QUIET=1
-	    shift
+	    #shift
 	    ;;
 	--iw)
 	    USE_IW=1
-	    shift
+	    #shift
 	    ;;
 	--eth)
 	    ETH="$2"
@@ -55,7 +67,7 @@ do
 	    ;;
 	--bridged)
 	    BRIDGED=1
-	    shift
+	    #shift
 	    ;;
 	-s|--click-script)
 	    CLICKSCRIPT="$2"
@@ -84,6 +96,8 @@ echo "NODEID=${NODEID}"
 echo "TXPOWER=${TXPOWER}"
 echo "CHANNEL=${CHANNEL}"
 echo "WLAN=${WLAN}"
+echo "BRIDGED=${BRIDGED}"
+
 
 
 IPPREFIX=10.42.43
@@ -92,6 +106,15 @@ NETMASK=24
 IPADDR=${IPPREFIX}.${NODEID}
 ETHM=""
 ETHIPADDR=""
+
+if [ -f "/sys/class/net/${WLAN}/operstate" ];
+then
+   echo "${WLAN} found"
+else
+	echo "wlan interface ${WLAN} not found"
+	exit
+fi
+
 WLANM=`cat /sys/class/net/${WLAN}/address`
 if [ "${BRIDGED}" != 0 ]; then
     CLICKAPP=RNP_CLIENT_PKGclick
@@ -100,7 +123,7 @@ if [ "${BRIDGED}" != 0 ]; then
     echo "bridged mode on ${ETH} - ${ETHIPADDR} ${ETHM}"
 fi
 #echo ${WLANM}
-SETUP_WLAN_SCRIPT=setup_wlan
+SETUP_WLAN_SCRIPT=/usr/local/bin/setup_wlan
 if [ "${USE_IW}" != 0 ]; then
     echo "using iw script"
     SETUP_WLAN_SCRIPT=setup_wlan_iw
@@ -124,11 +147,6 @@ rm -f ${CLICKCURRENTDUMP}
 check_click()
 {
   # check routes
-  RVAL=$(ip route list | grep -ci wlan0)
-  if [[ $RVAL == "0" ]]; then 
-      echo "ERROR: route for wlan0 - retval: $RVAL"
-      return 0
-  fi
   RVAL=$(ip route list | grep -ci fake0)
   if [[ $RVAL == "0" ]]; then 
       echo "ERROR: no route for fake0 - retval: $RVAL"
@@ -136,13 +154,14 @@ check_click()
   fi
   # check click running
   RVAL=$(pidof ${CLICKAPP})
+  echo "pidof clickapp ${RVAL}"
   if [[ -z $RVAL ]]; then 
     echo "ERROR: click not running"
     return 0
   fi
 
   RVAL=$(grep -ci 'Network is down' ${CLICKCURRENTLOG})
-  if [[ $RVAL == "0" ]]; then 
+  if [[ $RVAL != "0" ]]; then 
       echo "Network down in log"
       return 0
   fi
@@ -178,17 +197,20 @@ if [ -n "${INITROUTES}" ]; then
     python -m publish_route2_tree -c RNP2 ${IPADDR} `cat ${INITROUTES} | tr '\n' ' '`
 fi
 
-if [ "${QUIET}" != 0 ]; then
+if [ "${QUIET}" == 0 ]; then
     read -p "Press any key to finish"
     kill -9 $(pidof ${CLICKAPP})
     echo "Finished."
 else
     while true;
     do
-	if [[ -z check_click ]];
+	check_click
+	if [[ "$?" == "0" ]];
+	then	
 	   echo "click failed"
 	    exit 1
 	fi
+	echo "clickok"
 	sleep 1
     done
 fi
