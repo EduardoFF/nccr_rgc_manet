@@ -1,0 +1,2 @@
+export ENDNODECMD="end_node"
+export ENDNODECMDLINE="/usr/local/bin/end_node --nodeid 13 --mode xbee5 --abook /usr/local/share/nccr_manet/addressbook"

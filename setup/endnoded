@@ -1,0 +1,33 @@
+#!/bin/bash
+
+CONFIGFILE="/usr/local/share/nccr_manet/endnoded.conf"
+if [ -f ${CONFIGFILE}  ];
+then
+    source "${CONFIGFILE}"
+fi
+
+export ENDNODECMD
+cleanup() {
+    touch /logs/trapped
+    echo "cleaning -${ENDNODECMD}- end_node" > /logs/trapped
+    pkill -f end_node
+    exit
+}
+
+export -f cleanup
+trap 'cleanup' INT TERM HUP
+
+
+while true; do
+    if [ -z "$(pidof ${ENDNODECMD})" ] 
+    then
+	echo "setting up xbee bridge"
+	CTIME=$(env TZ=":Europe/Rome" date +%Y%m%d_%H%M%S)
+	LOGFILE="/logs/${CTIME}-endnode.log"
+	CURRENTLOG="/logs/endnode.log"
+        touch ${LOGFILE}
+	ln -f -s ${LOGFILE} ${CURRENTLOG}
+	${ENDNODECMDLINE} >> ${LOGFILE} 2>&1
+    fi
+    sleep 5
+done
