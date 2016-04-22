@@ -7,21 +7,11 @@ then
 fi
 
 while true; do
-    if [ -z "$(pidof RNP_CLIENT_PKGclick)" ] 
+    if [ -z "$(pidof ${SETUPMANETCMD})" ] 
     then
-	echo "starting click"
-	${CLICKPATH}/RNP_CLIENT_PKGclick ${CLICKPATH}/SCRIPTS/rnp_client/rnp_client_linux_n${NODEID}.click &
+	echo "setting up manet"
+	${SETUPMANETCMDLINE}
     fi
 
-    if [ -z "$(ip route get 224.0.0.0)" ]
-    then
-	route add -net 224.0.0.0 netmask 240.0.0.0 dev lo
-    fi
-
-    if [ -z "$(pidof end_node)" ] 
-    then
-	echo "starting end_node controller"
-	${ENDNODEPATH}/end_node --nodeid ${NODEID} &
-    fi
     sleep 1
 done
