@@ -18,5 +18,8 @@ prefix=/usr/local
 	update-rc.d endnoded defaults
 	update-rc.d endnoded enable
 
+   udev_U3: udev/U3/xbee.rules
+	install -m 0755 udev/U3/xbee.rules /etc/udev/rules.d/
+	udevadm control --reload-rules
 
-    .PHONY: install
+    .PHONY: install udev_U3
