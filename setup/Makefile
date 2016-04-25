@@ -21,5 +21,9 @@ prefix=/usr/local
    udev_U3: udev/U3/xbee.rules
 	install -m 0755 udev/U3/xbee.rules /etc/udev/rules.d/
 	udevadm control --reload-rules
+   udev_C1: udev/C1/xbee.rules
+	install -m 0755 udev/C1/xbee.rules /etc/udev/rules.d/
+	udevadm control --reload-rules
+
 
     .PHONY: install udev_U3
