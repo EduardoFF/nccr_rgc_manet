@@ -12,6 +12,7 @@ XROUTES=""
 ETH=eth0
 BRIDGED=0
 QUIET=0
+DEBUG=0
 export CLICKPATH=/usr/local/bin
 export CLICKAPP=RNP_PKGclick
 USE_IW=0
@@ -85,6 +86,12 @@ do
 	    echo "using init routes $XROUTES"
 	    shift
 	    ;;
+	-d|--debug)
+	    DEBUG="$2"
+	    echo "using debug level $DEBUG"
+	    shift
+	    ;;
+
 	-h|--help)
 	    print_help
 	    exit
@@ -202,7 +209,7 @@ echo "starting click"
 
 cd ${CLICKDUMPFOLDER} && ${CLICKPATH}/${CLICKAPP} WLANMAC=${WLANM} \
 WLANINTERFACE=${WLAN} ADHOCIP=${IPADDR}/${NETMASK} \
-ETHINTERFACE=${ETH} ETHIP=${ETHIPADDR}/${NETMASK} ETHMAC=${ETHM} \
+ETHINTERFACE=${ETH} ETHIP=${ETHIPADDR}/${NETMASK} ETHMAC=${ETHM} DEBUG=${DEBUG} \
 ${CLICKSCRIPT} &> ${CLICKLOGFILE} &
 ln -f -s ${CLICKLOGFILE} ${CLICKCURRENTLOG}
 ln -f -s ${CLICKDUMPFOLDER} ${CLICKCURRENTDUMP}
