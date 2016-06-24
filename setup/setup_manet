@@ -33,7 +33,7 @@ cleanup() {
 }
 
 export -f cleanup
-trap 'cleanup' INT TERM
+trap 'cleanup' INT TERM HUP
 
 
 
