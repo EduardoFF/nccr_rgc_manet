@@ -30,7 +30,7 @@ while true; do
 	CURRENTLOG="/logs/endnode.log"
         touch ${LOGFILE}
 	ln -f -s ${LOGFILE} ${CURRENTLOG}
-	${ENDNODECMDLINE} >> ${LOGFILE} 2>&1
+	${ENDNODECMDLINE} >> ${LOGFILE} 2>&1 &
     fi
     sleep 5
 done

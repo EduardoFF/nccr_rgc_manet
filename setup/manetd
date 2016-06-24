@@ -23,7 +23,7 @@ trap 'cleanup' INT TERM HUP SIGINT SIGTERM
 
 while :
 do
-    if [ -z "$(pidof ${SETUPMANETCMD})" ] 
+    if [ -z "$(pidof -x ${SETUPMANETCMD})" ] 
     then
 	echo "setting up manet"
 	CTIME=$(env TZ=":Europe/Rome" date +%Y%m%d_%H%M%S)
