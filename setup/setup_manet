@@ -165,8 +165,8 @@ check_click()
   # check routes
   RVAL=$(ip route list | grep -ci fake0)
   if [[ $RVAL == "0" ]]; then 
-      echo "ERROR: no route for fake0 - retval: $RVAL"
-      return 0
+      echo "WARNING: no route for fake0 - retval: $RVAL"
+      #return 0
   fi
   # check click running
   RVAL=$(pidof ${CLICKAPP})
