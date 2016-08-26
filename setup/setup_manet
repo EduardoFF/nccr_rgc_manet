@@ -17,6 +17,7 @@ UNBUFFERED=true
 export CLICKPATH=/usr/local/bin
 export CLICKAPP=RNP_PKGclick
 USE_IW=0
+QUEUESIZE=50
 
 print_help()
 {
@@ -29,7 +30,10 @@ cleanup() {
     touch /logs/smtrapped
     echo "cleaning -${CLICKAPP}- " > /logs/smtrapped
     pkill -f ${CLICKAPP}
-    exit
+    RVAL=$(ip route list | grep -ci fake0)
+    if [[ $RVAL == "1" ]]; then 
+	ip link delete fake0
+    fi    
 }
 
 export -f cleanup
@@ -131,6 +135,10 @@ else
 	exit
 fi
 
+
+cleanup
+
+
 WLANM=`cat /sys/class/net/${WLAN}/address`
 if [ "${BRIDGED}" != 0 ]; then
     CLICKAPP=RNP_CLIENT_PKGclick
@@ -166,7 +174,7 @@ check_click()
   RVAL=$(ip route list | grep -ci fake0)
   if [[ $RVAL == "0" ]]; then 
       echo "WARNING: no route for fake0 - retval: $RVAL"
-      #return 0
+      return 0
   fi
   # check click running
   RVAL=$(pidof ${CLICKAPP})
@@ -213,18 +221,19 @@ cd ${CLICKDUMPFOLDER} && ${CLICKPATH}/${CLICKAPP} WLANMAC=${WLANM} \
 				     ETHINTERFACE=${ETH} ETHIP=${ETHIPADDR}/${NETMASK} \
 				     ETHMAC=${ETHM} DEBUG=${DEBUG} \
 				     UNBUF=${UNBUFFERED} \
+				     QSIZE=${QUEUESIZE} \
 				     ${CLICKSCRIPT} &> ${CLICKLOGFILE} &
 ln -f -s ${CLICKLOGFILE} ${CLICKCURRENTLOG}
 ln -f -s ${CLICKDUMPFOLDER} ${CLICKCURRENTDUMP}
 sleep 5
 if [ -n "${INITROUTES}" ]; then
     echo "sending default routes ..."
-    python -m publish_route2_tree -c RNP2 ${IPADDR} `cat ${INITROUTES} | tr '\n' ' '`
+    python -m publish_route2_tree --local -c RNP2 ${IPADDR} `cat ${INITROUTES} | tr '\n' ' '`
 fi
 
 if [ -n "${XROUTES}" ]; then
     echo "sending xroutes ..."
-    python -m publish_route2_tree -c RNP2 -f ${XROUTES}
+    python -m publish_route2_tree --local -c RNP2 -f ${XROUTES}
 fi
 if [ "${QUIET}" == 0 ]; then
     read -p "Press any key to finish"
@@ -237,7 +246,8 @@ else
 	if [[ "$?" == "0" ]];
 	then	
 	   echo "click failed"
-	    exit 1
+	   cleanup
+	   exit
 	fi
 	echo "clickok"
 	sleep 1
