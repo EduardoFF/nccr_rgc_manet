@@ -205,9 +205,9 @@ ifconfig lo multicast
 route add -net 224.0.0.0 netmask 240.0.0.0 dev lo
 
 
-if [ "${BRIDGED}" == 0 ]; then
+#if [ "${BRIDGED}" == 0 ]; then
 ip route del to ${IPPREFIX}.0/${NETMASK}
-fi
+#fi
 
 if [ "${BRIDGED}" != 0 ]; then
 route add -net 224.0.0.0 netmask 240.0.0.0 dev ${ETH}
